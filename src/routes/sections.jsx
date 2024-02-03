@@ -5,6 +5,9 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 import ExpensePage from 'src/sections/expense/view/expense-view';
 
+import ProtectedRoute from './ProtectedRoute';
+
+
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
@@ -18,14 +21,16 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
+        <ProtectedRoute> 
         <DashboardLayout>
           <Suspense>
             <Outlet />
           </Suspense>
         </DashboardLayout>
+        </ProtectedRoute>
       ),
       children: [
-        { element: <IndexPage />, index: true },
+        { element:<ProtectedRoute> <IndexPage /></ProtectedRoute>, index: true },
 
         { path: 'user', element: <UserPage /> },
         { path: 'expense', element: <ExpensePage /> },
