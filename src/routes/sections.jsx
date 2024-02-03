@@ -3,6 +3,8 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import ExpensePage from 'src/sections/expense/view/expense-view';
+
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
@@ -24,7 +26,9 @@ export default function Router() {
       ),
       children: [
         { element: <IndexPage />, index: true },
+
         { path: 'user', element: <UserPage /> },
+        { path: 'expense', element: <ExpensePage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],
