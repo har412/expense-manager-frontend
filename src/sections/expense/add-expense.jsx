@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
@@ -13,6 +14,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { topFilms } from 'src/_mock/category';
+import { addExpense } from 'src/redux/expense/expenseSlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -61,7 +63,7 @@ export default function AddExpense({
 
   const [searchOpen, setSearchOpen] = useState(false)
   const [options, setOptions] = useState([]);
-
+  const dispatch = useDispatch()
   const loading = searchOpen && options.length === 0;
 
   function sleep(duration) {
@@ -81,9 +83,12 @@ export default function AddExpense({
       time: '',
     },
     validate,
-    onSubmit: (values) => {
-      // Handle form submission, you can access form values in the 'values' object
+    onSubmit: (values,{resetForm}) => {
       console.log(values);
+      const newData = values
+      newData.category = values.category.title
+      dispatch(addExpense(newData))
+      resetForm()
       handleClose();
     },
   });
@@ -160,7 +165,8 @@ export default function AddExpense({
                 onClose={() => {
                   setSearchOpen(false);
                 }}
-                getOptionLabel={(option) => option.title}
+                isOptionEqualToValue={(option, value) => option.title === value.title}
+                getOptionLabel={(option) => (option.title && typeof option.title === 'string') ? option.title : ''}
                 options={options}
                 loading={loading}
                 value={formik.values.category}
