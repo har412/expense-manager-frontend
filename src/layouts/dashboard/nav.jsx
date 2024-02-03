@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -15,7 +16,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { account } from 'src/_mock/account';
+// import { account } from 'src/_mock/account';
+import { getUser_ } from 'src/redux/user/userSlice';
 
 // import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
@@ -27,15 +29,23 @@ import navConfig from './config-navigation';
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
+  const dispatch = useDispatch()
+
+  useEffect( () => {
+    dispatch(getUser_())
+   }, [dispatch])
 
   const upLg = useResponsive('up', 'lg');
-
+  const user = useSelector((state) => (state.user.user))
+  console.log(user)
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+
 
   const renderAccount = (
     <Box
@@ -50,13 +60,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={user?.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{user?.name}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {user?.role}
         </Typography>
       </Box>
     </Box>
@@ -83,7 +93,7 @@ export default function Nav({ openNav, onCloseNav }) {
         },
       }}
     >
-      <div style={{display:"flex",justifyContent:"center",margin:"20px"}}>
+      <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
         <img alt="icon" src="/assets/icons/glass/logo.png" style={{ width: "40%" }} />
       </div>
 
@@ -93,7 +103,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      
+
     </Scrollbar>
   );
 

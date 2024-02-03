@@ -10,4 +10,11 @@ export const instance = axios.create({
     }
 })
 
+export const authInstance = axios.create({
+    baseURL:BASE_URL,
+    headers:{
+        'Content-Type':'application/json',
+        'Authorization':`Bearer ${localStorage.getItem('access_token')}`
+    }
+})
 
