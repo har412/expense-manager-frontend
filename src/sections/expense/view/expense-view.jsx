@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { isArray } from 'lodash';
+import { useState ,useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -11,6 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { users } from 'src/_mock/user';
+import { getExpense } from 'src/redux/expense/expenseSlice';
 
 // import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -40,6 +43,15 @@ export default function ExpensePage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [open, setOpen] = useState(false);
+
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(getExpense())
+  },[dispatch])
+
+  const expenses = useSelector((state)=>(state.expense.expense))
+  console.log(expenses)
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -91,7 +103,7 @@ export default function ExpensePage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: users,
+    inputData: expenses,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -100,12 +112,12 @@ export default function ExpensePage() {
 
   const handleClose = () => setOpen(false);
 
-  const notFound = !dataFiltered.length && !!filterName;
+  const notFound = dataFiltered && !dataFiltered.length && !!filterName;
 
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
+        <Typography variant="h4">Expenses</Typography>
         
 
         <AddExpense
@@ -135,30 +147,32 @@ export default function ExpensePage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'amount', label: 'Expense' },
-                  { id: 'description', label: 'Company' },
+                  { id: 'amount', label: 'Amount' },
                   { id: 'category', label: 'Category' },
-                  { id: 'date_time', label: 'Date Time', align: 'center' },
-                  { id: 'tag', label: 'Tags' },
+                  { id: 'description', label: 'Description' },
+                  { id: 'date_time', label: 'Date', align: 'center' },
                   { id: '' },
                 ]}
               />
               <TableBody>
-                {dataFiltered
+                { dataFiltered && isArray(dataFiltered) && dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <UserTableRow
-                      key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
-                    />
-                  ))}
+                  .map((row) =>{
+                    console.log(row)
+                    return  (
+                      <UserTableRow
+                        key={row._id}
+                        amount={row.amount}
+                        description={row.description}
+                        status={row.status}
+                        category={row.category}
+                        avatarUrl={row.avatarUrl}
+                        date={row.date}
+                        selected={selected.indexOf(row.name) !== -1}
+                        handleClick={(event) => handleClick(event, row.name)}
+                      />
+                    )
+                  })}
 
                 <TableEmptyRows
                   height={77}
@@ -171,15 +185,18 @@ export default function ExpensePage() {
           </TableContainer>
         </Scrollbar>
 
+       {
+        expenses &&
         <TablePagination
-          page={page}
-          component="div"
-          count={users.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        page={page}
+        component="div"
+        count={expenses.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        rowsPerPageOptions={[5, 10, 25]}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+       }
       </Card>
     </Container>
   );

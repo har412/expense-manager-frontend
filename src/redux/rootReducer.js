@@ -3,9 +3,11 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 import authSlice from "./auth/authSlice";
 import userSlice from "./user/userSlice";
+import expenseSlice from "./expense/expenseSlice";
 
 export const rootReducer = combineReducers({
     auth:authSlice,
-    user:userSlice
+    user:userSlice,
+    expense:expenseSlice
 })
 

@@ -14,7 +14,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { topFilms } from 'src/_mock/category';
-import { addExpense } from 'src/redux/expense/expenseSlice';
+import { addExpense, getExpense } from 'src/redux/expense/expenseSlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -42,10 +42,6 @@ const validate = (values) => {
 
   if (!values.category) {
     errors.category = 'Required';
-  }
-
-  if (!values.description) {
-    errors.description = 'Required';
   }
 
   if (!values.date) {
@@ -83,11 +79,14 @@ export default function AddExpense({
       time: '',
     },
     validate,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit:async (values, { resetForm }) => {
       console.log(values);
       const newData = values
       newData.category = values.category.title
-      dispatch(addExpense(newData))
+     const response = await dispatch(addExpense(newData))
+     if(response){
+      dispatch(getExpense())
+     }
       resetForm()
       handleClose();
     },

@@ -6,6 +6,14 @@ import { authInstance } from "src/services/axios";
 
 export const getExpense = createAsyncThunk('expense/getExpense', async () => {
 
+    try {
+        const response = await authInstance.get('expense')
+        return response.data
+    } catch (error) {
+        console.log(error)
+        toast(error.response.data.detail)
+        return error.response.data.detail
+    }
 
 })
 
@@ -17,7 +25,7 @@ export const addExpense = createAsyncThunk('expense/addExpense', async (data) =>
     } catch (error) {
         console.log(error)
         toast(error.response.data.detail)
-        return error.response.data.detail
+        return null
     }
 
 })
@@ -43,6 +51,19 @@ const expenseSlice = createSlice({
             state.expense = action.payload.data
         })
         builder.addCase(addExpense.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        })
+
+        builder.addCase(getExpense.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(getExpense.fulfilled, (state, action) => {
+            state.loading = false;
+            console.log(action.payload,"oo")
+            state.expense = action.payload.data
+        })
+        builder.addCase(getExpense.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message
         })

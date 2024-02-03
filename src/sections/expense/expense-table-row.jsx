@@ -1,8 +1,9 @@
+import moment from 'moment';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -11,18 +12,18 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import Label from 'src/components/label';
+// import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   selected,
-  name,
+  amount,
   avatarUrl,
-  company,
-  role,
-  isVerified,
+  category,
+  description,
+  date,
   status,
   handleClick,
 }) {
@@ -44,23 +45,23 @@ export default function UserTableRow({
         </TableCell>
 
         <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src={avatarUrl} />
-            <Typography variant="subtitle2" noWrap>
-              {name}
+          <Stack direction="row" alignItems="center" sx={{paddingLeft:"20px"}} spacing={2}>
+            {/* <Avatar alt={name} src={avatarUrl} /> */}
+            <Typography variant="subtitle2" noWrap >
+              {amount}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{category}</TableCell>
 
-        <TableCell>{role}</TableCell>
+        <TableCell sx={{wordBreak:"break-word"}} >{description}</TableCell>
 
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
+        <TableCell align="center" sx={{whiteSpace:"nowrap"}} >{moment(date, 'YYYY-MM-DD').format('DD MMM YYYY')}</TableCell>
 
-        <TableCell>
+        {/* <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
-        </TableCell>
+        </TableCell> */}
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -95,11 +96,11 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
+  description: PropTypes.any,
   handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
-  name: PropTypes.any,
-  role: PropTypes.any,
+  date: PropTypes.any,
+  amount: PropTypes.any,
+  category: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
 };
