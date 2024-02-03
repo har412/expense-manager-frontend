@@ -83,7 +83,7 @@ export default function AddExpense({
       time: '',
     },
     validate,
-    onSubmit: (values,{resetForm}) => {
+    onSubmit: (values, { resetForm }) => {
       console.log(values);
       const newData = values
       newData.category = values.category.title
@@ -129,7 +129,7 @@ export default function AddExpense({
         aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
-        closeAfterTransition  
+        closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
           backdrop: {
@@ -170,8 +170,8 @@ export default function AddExpense({
                 options={options}
                 loading={loading}
                 value={formik.values.category}
-                onChange={(event,newValue)=>{
-                  formik.setFieldValue('category',newValue)
+                onChange={(event, newValue) => {
+                  formik.setFieldValue('category', newValue)
                 }}
                 renderInput={(params) => (
                   <TextField
