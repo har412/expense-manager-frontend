@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import Stack from '@mui/material/Stack';
 // import Avatar from '@mui/material/Avatar';
@@ -11,9 +12,13 @@ import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import { Button, Dialog , DialogTitle  ,DialogContent, DialogActions, DialogContentText } from '@mui/material';
+
+import { getExpense, deleteExpense } from 'src/redux/expense/expenseSlice';
 
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
+
 
 // ----------------------------------------------------------------------
 
@@ -25,17 +30,39 @@ export default function UserTableRow({
   description,
   date,
   status,
+  expenseId,
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
+  const dispatch = useDispatch()
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
+  };
+
+  const handleOpenConfirmation = () => {
+    setOpenConfirmation(true);
+    handleCloseMenu();
+  };
+
+  const handleCloseConfirmation = () => {
+    setOpenConfirmation(false);
   };
 
   const handleCloseMenu = () => {
     setOpen(null);
   };
+
+  const handleDeleteExpense = () =>{
+    handleCloseConfirmation();
+   const response = dispatch(deleteExpense(expenseId))
+   if(response)
+   {
+    dispatch(getExpense())
+   }
+  }
+
 
   return (
     <>
@@ -69,6 +96,25 @@ export default function UserTableRow({
           </IconButton>
         </TableCell>
       </TableRow>
+      <Dialog
+        open={openConfirmation}
+        onClose={handleCloseConfirmation}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this expense?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmation}>Cancel</Button>
+          <Button onClick={handleDeleteExpense} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Popover
         open={!!open}
@@ -85,7 +131,7 @@ export default function UserTableRow({
           Edit
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleOpenConfirmation} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
@@ -101,6 +147,7 @@ UserTableRow.propTypes = {
   date: PropTypes.any,
   amount: PropTypes.any,
   category: PropTypes.any,
+  expenseId: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
 };

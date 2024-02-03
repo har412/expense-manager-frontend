@@ -30,6 +30,20 @@ export const addExpense = createAsyncThunk('expense/addExpense', async (data) =>
 
 })
 
+export const deleteExpense = createAsyncThunk('expense/deleteExpense', async (expenseId) => {
+    try {
+        const response = await authInstance.delete(`expense/delete/${expenseId}`)
+        toast('Expense deleted successfully')
+        return response.data
+    } catch (error) {
+        console.log(error)
+        toast(error.response.data.detail)
+        return null
+    }
+
+})
+
+
 
 
 
@@ -60,13 +74,25 @@ const expenseSlice = createSlice({
         })
         builder.addCase(getExpense.fulfilled, (state, action) => {
             state.loading = false;
-            console.log(action.payload,"oo")
             state.expense = action.payload.data
         })
         builder.addCase(getExpense.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message
         })
+
+        builder.addCase(deleteExpense.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(deleteExpense.fulfilled, (state) => {
+            state.loading = false;
+        })
+        builder.addCase(deleteExpense.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        })
+
+        
     }
 })
 

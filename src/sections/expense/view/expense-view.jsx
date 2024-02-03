@@ -168,6 +168,7 @@ export default function ExpensePage() {
                         category={row.category}
                         avatarUrl={row.avatarUrl}
                         date={row.date}
+                        expenseId ={row._id}
                         selected={selected.indexOf(row.name) !== -1}
                         handleClick={(event) => handleClick(event, row.name)}
                       />
