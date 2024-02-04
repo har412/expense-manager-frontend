@@ -17,7 +17,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
-import { loginUser } from 'src/redux/auth/authSlice';
+import { RegisterUser } from 'src/redux/auth/authSlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -31,6 +31,7 @@ export default function RegisterView() {
     const dispatch = useDispatch()
 
     const validationSchema = Yup.object({
+        name: Yup.string().required('Required'),
         email: Yup.string().email('Invalid email address').required('Required'),
         password: Yup.string().required('Required'),
     });
@@ -45,7 +46,7 @@ export default function RegisterView() {
         onSubmit: async (values) => {
             // console.log('Form submitted with values:', values);
             try {
-                const data = await dispatch(loginUser(values));
+                const data = await dispatch(RegisterUser(values));
                 if (!data.error) {
                     router.push('/')
                 }
