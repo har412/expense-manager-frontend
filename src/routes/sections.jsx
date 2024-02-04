@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
+import RegisterView from 'src/pages/register';
 import DashboardLayout from 'src/layouts/dashboard';
 
 import IncomePage from 'src/sections/income/view/income-view';
@@ -33,7 +34,7 @@ export default function Router() {
         </ProtectedRoute>
       ),
       children: [
-        { element:<ProtectedRoute> <IndexPage /></ProtectedRoute>, index: true },
+        { element:<ProtectedRoute> <IndexPage /></ProtectedRoute>, path:"dashboard" },
 
         { path: 'user', element: <UserPage /> },
         { path: 'admin', element: <IndexPage /> },
@@ -46,8 +47,12 @@ export default function Router() {
       ],
     },
     {
-      path: 'login',
+      path: '/',
       element: <LoginPage />,
+    },
+    {
+      path: '/register',
+      element: <RegisterView />,
     },
     {
       path: '404',

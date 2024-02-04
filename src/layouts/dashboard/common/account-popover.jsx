@@ -54,7 +54,7 @@ export default function AccountPopover() {
 
   const handleLogout = () =>{
     localStorage.removeItem('access_token')
-    navigate('/login')
+    navigate('/')
     handleClose()
   }
 

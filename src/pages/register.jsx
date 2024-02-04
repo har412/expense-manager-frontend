@@ -25,7 +25,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function LoginView() {
+export default function RegisterView() {
   const theme = useTheme();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
@@ -48,7 +48,7 @@ export default function LoginView() {
       try {
       const data =  await dispatch(loginUser(values)); 
       if(!data.error){
-        router.push('/dashboard')
+        router.push('/')
       }
       } catch (error) {
         console.error('Login failed:', error.message);
@@ -59,10 +59,6 @@ export default function LoginView() {
   const handleClick = () => {
     formik.handleSubmit(); 
   };
-
-  const handleRegisterClick =()=>{
-    router.push('/register')
-  }
 
   const renderForm = (
     <form onSubmit={formik.handleSubmit}> 
@@ -147,7 +143,7 @@ export default function LoginView() {
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 , cursor:"pointer"}} onClick={handleRegisterClick}  >
+            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
               Get started
             </Link>
           </Typography>
