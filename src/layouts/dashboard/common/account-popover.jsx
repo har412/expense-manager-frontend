@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -11,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
+import { getUser_ } from 'src/redux/user/userSlice';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +35,14 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    dispatch(getUser_())
+  },[dispatch])
+
+  const user = useSelector((state)=>(state.user.user))
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -91,14 +100,16 @@ export default function AccountPopover() {
           },
         }}
       >
-        <Box sx={{ my: 1.5, px: 2 }}>
+      {
+      user &&   <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user.email}
           </Typography>
         </Box>
+      }
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

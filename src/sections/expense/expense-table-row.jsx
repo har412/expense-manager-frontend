@@ -19,6 +19,8 @@ import { getExpense, deleteExpense } from 'src/redux/expense/expenseSlice';
 // import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
+import EditExpense from './view/edit-expense';
+
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +36,7 @@ export default function UserTableRow({
   handleClick,
 }) {
   const [open, setOpen] = useState(null);
+  const [openEditBox, setOpenEditBox] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const dispatch = useDispatch()
@@ -63,9 +66,19 @@ export default function UserTableRow({
    }
   }
 
+  
+  const handleCloseEditBox =()=>{
+    setOpenEditBox(false)
+  }
+
+  const handleOpenEditBox =()=>{
+    setOpenEditBox(true)
+  }
+
 
   return (
     <>
+   
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
@@ -89,7 +102,7 @@ export default function UserTableRow({
         {/* <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell> */}
-
+  
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
@@ -126,10 +139,9 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
+       
+          <EditExpense open={openEditBox} handleClose={handleCloseEditBox} handleOpen={handleOpenEditBox} expenseId={expenseId} />
+        
 
         <MenuItem onClick={handleOpenConfirmation} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
