@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -26,7 +25,7 @@ import EditExpenseCategory from './view/edit-expenseCategory';
 
 export default function UserTableRow({
   selected,
-  amount,
+  name,
   avatarUrl,
   category,
   description,
@@ -88,21 +87,13 @@ export default function UserTableRow({
           <Stack direction="row" alignItems="center" sx={{paddingLeft:"20px"}} spacing={2}>
             {/* <Avatar alt={name} src={avatarUrl} /> */}
             <Typography variant="subtitle2" noWrap >
-              {amount}
+              {name}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{category}</TableCell>
+        <TableCell>{description}</TableCell>
 
-        <TableCell sx={{wordBreak:"break-word"}} >{description}</TableCell>
-
-        <TableCell align="center" sx={{whiteSpace:"nowrap"}} >{moment(date, 'YYYY-MM-DD').format('DD MMM YYYY')}</TableCell>
-
-        {/* <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
-        </TableCell> */}
-  
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
             <Iconify icon="eva:more-vertical-fill" />
@@ -157,7 +148,7 @@ UserTableRow.propTypes = {
   description: PropTypes.any,
   handleClick: PropTypes.func,
   date: PropTypes.any,
-  amount: PropTypes.any,
+  name: PropTypes.any,
   category: PropTypes.any,
   expenseCategoryId: PropTypes.any,
   selected: PropTypes.any,

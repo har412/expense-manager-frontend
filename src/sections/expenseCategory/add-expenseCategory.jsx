@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
@@ -10,10 +9,7 @@ import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
 
-import { topFilms } from 'src/_mock/category';
 import { addExpenseCategory, getExpenseCategory } from 'src/redux/expenseCategory/expenseCategorySlice';
 
 import Iconify from 'src/components/iconify';
@@ -34,19 +30,10 @@ const style = {
 const validate = (values) => {
   const errors = {};
 
-  if (!values.amount) {
-    errors.amount = 'Required';
-  } else if (Number.isNaN(values.amount)) {
-    errors.amount = 'Must be a number';
+  if (!values.name) {
+    errors.name = 'Required';
   }
 
-  if (!values.category) {
-    errors.category = 'Required';
-  }
-
-  if (!values.date) {
-    errors.date = 'Required';
-  }
 
   return errors;
 };
@@ -57,66 +44,28 @@ export default function AddExpenseCategory({
   handleOpen,
 }) {
 
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [options, setOptions] = useState([]);
   const dispatch = useDispatch()
-  const loading = searchOpen && options.length === 0;
-
-  function sleep(duration) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, duration);
-    });
-  }
 
   const formik = useFormik({
     initialValues: {
-      amount: '',
-      category: null,
+      name: '',
       description: '',
-      date: '',
-      time: '',
     },
     validate,
-    onSubmit:async (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(values);
-      const newData = values
-      newData.category = values.category.title
-     const response = await dispatch(addExpenseCategory(newData))
-     if(response){
-      dispatch(getExpenseCategory())
-     }
+      const newData = {
+        name: values.name,
+        description: values.description,
+      };
+      const response = await dispatch(addExpenseCategory(newData))
+      if (response) {
+        dispatch(getExpenseCategory())
+      }
       resetForm()
       handleClose();
     },
   });
-
-  useEffect(() => {
-    let active = true;
-
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      await sleep(1e3);
-
-      if (active) {
-        setOptions([...topFilms]);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
-
-  useEffect(() => {
-    if (!searchOpen) {
-      setOptions([]);
-    }
-  }, [searchOpen]);
 
   return (
     <div>
@@ -144,51 +93,14 @@ export default function AddExpenseCategory({
             <form onSubmit={formik.handleSubmit}>
               <TextField
                 fullWidth
-                id="amount"
-                name="amount"
-                label="ExpenseCategory Amount"
-                type="number"
-                value={formik.values.amount}
+                id="name"
+                name="name"
+                label="Name"
+                value={formik.values.name}
                 onChange={formik.handleChange}
-                error={formik.touched.amount && Boolean(formik.errors.amount)}
-                helperText={formik.touched.amount && formik.errors.amount}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
                 sx={{ mb: 2 }}
-              />
-              <Autocomplete
-                id="category"
-                open={searchOpen}
-                onOpen={() => {
-                  setSearchOpen(true);
-                }}
-                sx={{ mb: 2 }}
-                onClose={() => {
-                  setSearchOpen(false);
-                }}
-                isOptionEqualToValue={(option, value) => option.title === value.title}
-                getOptionLabel={(option) => (option.title && typeof option.title === 'string') ? option.title : ''}
-                options={options}
-                loading={loading}
-                value={formik.values.category}
-                onChange={(event, newValue) => {
-                  formik.setFieldValue('category', newValue)
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Type and Select Category"
-                    error={formik.touched.category && Boolean(formik.errors.category)}
-                    helperText={formik.touched.category && formik.errors.category}
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
-                )}
               />
               <TextField
                 fullWidth
@@ -201,26 +113,6 @@ export default function AddExpenseCategory({
                 onChange={formik.handleChange}
                 error={formik.touched.description && Boolean(formik.errors.description)}
                 helperText={formik.touched.description && formik.errors.description}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                fullWidth
-                id="date"
-                name="date"
-                type="date"
-                value={formik.values.date}
-                onChange={formik.handleChange}
-                error={formik.touched.date && Boolean(formik.errors.date)}
-                helperText={formik.touched.date && formik.errors.date}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                fullWidth
-                id="time"
-                name="time"
-                type="time"
-                value={formik.values.time}
-                onChange={formik.handleChange}
                 sx={{ mb: 2 }}
               />
               <Box sx={{ display: "flex", justifyContent: "center" }}>

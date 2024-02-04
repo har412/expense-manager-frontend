@@ -147,10 +147,8 @@ export default function IncomeCategoryPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'amount', label: 'Amount' },
-                  { id: 'category', label: 'Category' },
+                  { id: 'Name', label: 'Name' },
                   { id: 'description', label: 'Description' },
-                  { id: 'date_time', label: 'Date', align: 'center' },
                   { id: '' },
                 ]}
               />
@@ -162,7 +160,7 @@ export default function IncomeCategoryPage() {
                     return  (
                       <UserTableRow
                         key={row._id}
-                        amount={row.amount}
+                        amount={row.name}
                         description={row.description}
                         status={row.status}
                         category={row.category}

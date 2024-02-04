@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
@@ -93,15 +92,8 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{category}</TableCell>
+        <TableCell>{description}</TableCell>
 
-        <TableCell sx={{wordBreak:"break-word"}} >{description}</TableCell>
-
-        <TableCell align="center" sx={{whiteSpace:"nowrap"}} >{moment(date, 'YYYY-MM-DD').format('DD MMM YYYY')}</TableCell>
-
-        {/* <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
-        </TableCell> */}
   
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>

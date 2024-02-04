@@ -37,12 +37,12 @@ export default function Router() {
 
         { path: 'user', element: <UserPage /> },
         { path: 'admin', element: <IndexPage /> },
-        { path: 'expense', element: <ExpensePage /> },
-        { path: 'income', element: <IncomePage /> },
+        { path: 'expense', element: <ProtectedRoute><ExpensePage /></ProtectedRoute> },
+        { path: 'income', element:<ProtectedRoute><IncomePage /></ProtectedRoute>  },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
-        { path: 'income-category', element: <IncomeCategoryPage /> },
-        { path: 'expense-category', element: <ExpenseCategoryPage /> },
+        { path: 'income-category', element:<ProtectedRoute> <IncomeCategoryPage /></ProtectedRoute> },
+        { path: 'expense-category', element:<ProtectedRoute><ExpenseCategoryPage /></ProtectedRoute>  },
       ],
     },
     {
