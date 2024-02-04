@@ -165,6 +165,7 @@ export default function ExpenseCategoryPage() {
                         status={row.status}
                         category={row.category}
                         avatarUrl={row.avatarUrl}
+                        isDefault={row.default}
                         date={row.date}
                         expenseCategoryId ={row._id}
                         selected={selected.indexOf(row.name) !== -1}

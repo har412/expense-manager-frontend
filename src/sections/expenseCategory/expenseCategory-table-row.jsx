@@ -30,6 +30,7 @@ export default function UserTableRow({
   category,
   description,
   date,
+  isDefault,
   status,
   expenseCategoryId,
   handleClick,
@@ -134,10 +135,12 @@ export default function UserTableRow({
           <EditExpenseCategory open={openEditBox} handleClose={handleCloseEditBox} handleOpen={handleOpenEditBox} expenseCategoryId={expenseCategoryId} />
         
 
-        <MenuItem onClick={handleOpenConfirmation} sx={{ color: 'error.main' }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
+          {
+          !isDefault && <MenuItem onClick={handleOpenConfirmation} sx={{ color: 'error.main' }}>
+            <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+            Delete
+          </MenuItem>
+        }
       </Popover>
     </>
   );
@@ -151,6 +154,7 @@ UserTableRow.propTypes = {
   name: PropTypes.any,
   category: PropTypes.any,
   expenseCategoryId: PropTypes.any,
+  isDefault: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
 };

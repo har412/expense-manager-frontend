@@ -14,6 +14,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // import { topFilms } from 'src/_mock/category';
+import { getCurrentDate } from 'src/utils/date';
+
 import { addExpense, getExpense } from 'src/redux/expense/expenseSlice';
 import { getExpenseCategory } from 'src/redux/expenseCategory/expenseCategorySlice';
 
@@ -60,6 +62,7 @@ export default function AddExpense({
 
   const [searchOpen, setSearchOpen] = useState(false)
   const [options, setOptions] = useState([]);
+  
   const dispatch = useDispatch()
   const loading = searchOpen && options.length === 0;
 
@@ -74,7 +77,7 @@ export default function AddExpense({
       amount: '',
       category: null,
       description: '',
-      date: '',
+      date: getCurrentDate(),
       time: '',
     },
     validate,
