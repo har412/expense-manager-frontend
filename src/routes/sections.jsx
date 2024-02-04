@@ -39,6 +39,8 @@ export default function Router() {
         { path: 'income', element: <IncomePage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'income-category', element: <BlogPage /> },
+        { path: 'expense-category', element: <BlogPage /> },
       ],
     },
     {

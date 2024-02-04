@@ -18,8 +18,18 @@ const navConfig = [
     icon: icon('ic_cart'),
   },
   {
+    title: 'Expense Category',
+    path: '/expense-category',
+    icon: icon('ic_cart'),
+  },
+  {
     title: 'income',
     path: '/income',
+    icon: icon('ic_lock'),
+  },
+  {
+    title: 'Income Category',
+    path: '/income-category',
     icon: icon('ic_lock'),
   },
   // {
