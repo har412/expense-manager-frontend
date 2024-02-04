@@ -31,13 +31,14 @@ export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
   const dispatch = useDispatch()
 
+  const upLg = useResponsive('up', 'lg');
+  const user = useSelector((state) => (state.user.user))
+  console.log(user)
+
   useEffect( () => {
     dispatch(getUser_())
    }, [dispatch])
 
-  const upLg = useResponsive('up', 'lg');
-  const user = useSelector((state) => (state.user.user))
-  console.log(user)
   useEffect(() => {
     if (openNav) {
       onCloseNav();

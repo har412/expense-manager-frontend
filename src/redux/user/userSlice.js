@@ -1,14 +1,14 @@
 import { toast } from "react-toastify";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-import { userApi } from "src/services/userApi";
+import { authInstance } from "src/services/axios";
 
 
 
 export const getUser_ = createAsyncThunk('user/getUser_',async()=>{
     try {
-        const response = await userApi.getUser()
-        console.log(response.data)
+        const response = await authInstance.get('user')
+        // console.log(response)
         return response.data
     } catch (error) {
         console.log(error)
@@ -35,6 +35,7 @@ const userSlice = createSlice({
         })
         builder.addCase(getUser_.fulfilled,(state,action)=>{
             state.loading = false ;
+            // console.log(action.payload,"oo")
             state.user = action.payload.data[0]
         })
         builder.addCase(getUser_.rejected, (state,action)=>{

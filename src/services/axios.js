@@ -14,7 +14,14 @@ export const authInstance = axios.create({
     baseURL:BASE_URL,
     headers:{
         'Content-Type':'application/json',
-        'Authorization':`Bearer ${localStorage.getItem('access_token')}`
     }
 })
 
+
+authInstance.interceptors.request.use(
+    config => {
+      config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
+          return config;
+      },
+      error => Promise.reject(error)
+  );
