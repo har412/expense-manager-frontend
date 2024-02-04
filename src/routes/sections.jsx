@@ -5,6 +5,8 @@ import DashboardLayout from 'src/layouts/dashboard';
 
 import IncomePage from 'src/sections/income/view/income-view';
 import ExpensePage from 'src/sections/expense/view/expense-view';
+import IncomeCategoryPage from 'src/sections/incomeCategory/view/incomeCategory-view';
+import ExpenseCategoryPage from 'src/sections/expenseCategory/view/expenseCategory-view';
 
 import ProtectedRoute from './ProtectedRoute';
 
@@ -39,8 +41,8 @@ export default function Router() {
         { path: 'income', element: <IncomePage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
-        { path: 'income-category', element: <BlogPage /> },
-        { path: 'expense-category', element: <BlogPage /> },
+        { path: 'income-category', element: <IncomeCategoryPage /> },
+        { path: 'expense-category', element: <ExpenseCategoryPage /> },
       ],
     },
     {
