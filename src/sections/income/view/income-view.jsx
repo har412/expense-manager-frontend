@@ -13,22 +13,22 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import { users } from 'src/_mock/user';
-import { getExpense } from 'src/redux/expense/expenseSlice';
+import { getIncome } from 'src/redux/income/incomeSlice';
 
 // import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import AddExpense from '../add-expense';
+import AddIncome from '../add-income';
 import TableNoData from '../table-no-data';
-import UserTableRow from '../expense-table-row';
+import UserTableRow from '../income-table-row';
 import TableEmptyRows from '../table-empty-rows';
-import UserTableHead from '../expense-table-head';
-import UserTableToolbar from '../expense-table-toolbar';
+import UserTableHead from '../income-table-head';
+import UserTableToolbar from '../income-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function ExpensePage() {
+export default function IncomePage() {
   
   const [page, setPage] = useState(0);
 
@@ -47,11 +47,11 @@ export default function ExpensePage() {
   const dispatch = useDispatch()
 
   useEffect(()=>{
-    dispatch(getExpense())
+    dispatch(getIncome())
   },[dispatch])
 
-  const expenses = useSelector((state)=>(state.expense.expense))
-  console.log(expenses)
+  const incomes = useSelector((state)=>(state.income.income))
+  console.log(incomes)
 
   const handleSort = (event, id) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -103,7 +103,7 @@ export default function ExpensePage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: expenses,
+    inputData: incomes,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -117,10 +117,11 @@ export default function ExpensePage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-      <img alt="icon" src="/assets/icons/glass/expense.png" width="80px" />
-        <Typography variant="h3">Expenses</Typography>
+      <img alt="icon" src="/assets/icons/glass/income.png" width="80px" />
+        <Typography variant="h3">Incomes</Typography>
         
-        <AddExpense
+
+        <AddIncome
         open={open}
         handleClose={handleClose}
         handleOpen={handleOpen}
@@ -168,7 +169,7 @@ export default function ExpensePage() {
                         category={row.category}
                         avatarUrl={row.avatarUrl}
                         date={row.date}
-                        expenseId ={row._id}
+                        incomeId ={row._id}
                         selected={selected.indexOf(row.name) !== -1}
                         handleClick={(event) => handleClick(event, row.name)}
                       />
@@ -187,11 +188,11 @@ export default function ExpensePage() {
         </Scrollbar>
 
        {
-        expenses &&
+        incomes &&
         <TablePagination
         page={page}
         component="div"
-        count={expenses.length}
+        count={incomes.length}
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         rowsPerPageOptions={[5, 10, 25]}

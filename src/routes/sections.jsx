@@ -3,6 +3,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import IncomePage from 'src/sections/income/view/income-view';
 import ExpensePage from 'src/sections/expense/view/expense-view';
 
 import ProtectedRoute from './ProtectedRoute';
@@ -33,7 +34,9 @@ export default function Router() {
         { element:<ProtectedRoute> <IndexPage /></ProtectedRoute>, index: true },
 
         { path: 'user', element: <UserPage /> },
+        { path: 'admin', element: <IndexPage /> },
         { path: 'expense', element: <ExpensePage /> },
+        { path: 'income', element: <IncomePage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
       ],

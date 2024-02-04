@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { topFilms } from 'src/_mock/category';
-import { getExpense,updateExpense, getSingleExpense,  } from 'src/redux/expense/expenseSlice';
+import { getIncome,updateIncome, getSingleIncome,  } from 'src/redux/income/incomeSlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -52,11 +52,11 @@ const validate = (values) => {
     return errors;
 };
 
-export default function EditExpense({
+export default function EditIncome({
     open,
     handleClose,
     handleOpen,
-    expenseId
+    incomeId
 }) {
 
     const [searchOpen, setSearchOpen] = useState(false)
@@ -99,12 +99,12 @@ export default function EditExpense({
     }, [searchOpen]);
 
     useEffect(() => {
-        console.log(expenseId)
-        dispatch(getSingleExpense(expenseId))
-    }, [dispatch, expenseId])
+        console.log(incomeId)
+        dispatch(getSingleIncome(incomeId))
+    }, [dispatch, incomeId])
 
-    const singleExpense = useSelector((state) => (state.expense.singleExpense))
-    console.log(singleExpense)
+    const singleIncome = useSelector((state) => (state.income.singleIncome))
+    console.log(singleIncome)
 
 
 
@@ -121,9 +121,9 @@ export default function EditExpense({
             console.log(values);
             const data = values
             data.category = values.category.title
-            const response = await dispatch(updateExpense({data,expenseId}))
+            const response = await dispatch(updateIncome({data,incomeId}))
             if (response) {
-                dispatch(getExpense())
+                dispatch(getIncome())
             }
             resetForm()
             handleClose();
@@ -131,15 +131,15 @@ export default function EditExpense({
     });
 
     useEffect(() => {
-        if (singleExpense && singleExpense[0]) {
-            formik.setFieldValue('amount', singleExpense[0].amount);
-            formik.setFieldValue('category', {title:singleExpense[0].category});
-            formik.setFieldValue('description', singleExpense[0].description);
-            formik.setFieldValue('date', singleExpense[0].date);
-            formik.setFieldValue('time', singleExpense[0].time);
+        if (singleIncome && singleIncome[0]) {
+            formik.setFieldValue('amount', singleIncome[0].amount);
+            formik.setFieldValue('category', {title:singleIncome[0].category});
+            formik.setFieldValue('description', singleIncome[0].description);
+            formik.setFieldValue('date', singleIncome[0].date);
+            formik.setFieldValue('time', singleIncome[0].time);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [expenseId, singleExpense]);
+    }, [incomeId, singleIncome]);
 
     return (
         <>
@@ -164,14 +164,14 @@ export default function EditExpense({
                 <Fade in={open}>
                     <Box sx={style}>
                         <Typography sx={{ mb: 2 }} id="transition-modal-title" variant="h6" component="h2">
-                            Edit Expense
+                            Edit Income
                         </Typography>
                         <form onSubmit={formik.handleSubmit}>
                             <TextField
                                 fullWidth
                                 id="amount"
                                 name="amount"
-                                label="Expense Amount"
+                                label="Income Amount"
                                 type="number"
                                 value={formik.values.amount}
                                 onChange={formik.handleChange}
@@ -219,7 +219,7 @@ export default function EditExpense({
                                 fullWidth
                                 id="description"
                                 name="description"
-                                label="Expense Description"
+                                label="Income Description"
                                 multiline
                                 rows={4}
                                 value={formik.values.description}
@@ -261,9 +261,9 @@ export default function EditExpense({
     );
 }
 
-EditExpense.propTypes = {
+EditIncome.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
     handleOpen: PropTypes.func,
-    expenseId: PropTypes.any,
+    incomeId: PropTypes.any,
 };
