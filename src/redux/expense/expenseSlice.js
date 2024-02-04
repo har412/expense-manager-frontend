@@ -12,7 +12,7 @@ export const getExpense = createAsyncThunk('expense/getExpense', async () => {
     } catch (error) {
         console.log(error)
         toast(error.response.data.detail)
-        return error.response.data.detail
+        return null
     }
 
 })
@@ -44,6 +44,33 @@ export const deleteExpense = createAsyncThunk('expense/deleteExpense', async (ex
 })
 
 
+export const getSingleExpense = createAsyncThunk('expense/getSingleExpense', async (expenseId) => {
+
+    try {
+        const response = await authInstance.get(`expense/${expenseId}`)
+        return response.data
+    } catch (error) {
+        console.log(error)
+        toast(error.response.data.detail)
+        return null
+    }
+
+})
+
+export const updateExpense = createAsyncThunk('expense/updateExpense', async ( {data ,expenseId}) => {
+    try {
+        console.log(expenseId)
+        const response = await authInstance.post(`expense/update/${expenseId}`, data)
+        toast('Expense Updated successfully')
+        return response.data
+    } catch (error) {
+        console.log(error)
+        toast(error.response.data.detail)
+        return null
+    }
+
+})
+
 
 
 
@@ -52,11 +79,15 @@ const expenseSlice = createSlice({
     name: "expense",
     initialState: {
         expense: null,
+        singleExpense:null,
         loading: false,
         error: null
     },
     reducers: {},
     extraReducers: (builder) => {
+
+        // add expense
+
         builder.addCase(addExpense.pending, (state) => {
             state.loading = true
         })
@@ -68,6 +99,7 @@ const expenseSlice = createSlice({
             state.loading = false;
             state.error = action.error.message
         })
+        // get all expenses
 
         builder.addCase(getExpense.pending, (state) => {
             state.loading = true
@@ -80,6 +112,7 @@ const expenseSlice = createSlice({
             state.loading = false;
             state.error = action.error.message
         })
+        // delete expense
 
         builder.addCase(deleteExpense.pending, (state) => {
             state.loading = true
@@ -91,7 +124,31 @@ const expenseSlice = createSlice({
             state.loading = false;
             state.error = action.error.message
         })
+        // get single expense 
 
+        builder.addCase(getSingleExpense.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(getSingleExpense.fulfilled, (state,action) => {
+            state.loading = false;
+            state.singleExpense = action.payload.data
+        })
+        builder.addCase(getSingleExpense.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        })
+        // update expense 
+
+        builder.addCase(updateExpense.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(updateExpense.fulfilled, (state) => {
+            state.loading = false
+        })
+        builder.addCase(updateExpense.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message
+        })
         
     }
 })

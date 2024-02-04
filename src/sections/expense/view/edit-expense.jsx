@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
@@ -15,7 +15,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { topFilms } from 'src/_mock/category';
-import { addExpense, getExpense } from 'src/redux/expense/expenseSlice';
+import { getExpense,updateExpense, getSingleExpense,  } from 'src/redux/expense/expenseSlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -72,28 +72,6 @@ export default function EditExpense({
         });
     }
 
-    const formik = useFormik({
-        initialValues: {
-            amount: '',
-            category: null,
-            description: '',
-            date: '',
-            time: '',
-        },
-        validate,
-        onSubmit: async (values, { resetForm }) => {
-            console.log(values);
-            const newData = values
-            newData.category = values.category.title
-            const response = await dispatch(addExpense(newData))
-            if (response) {
-                dispatch(getExpense())
-            }
-            resetForm()
-            handleClose();
-        },
-    });
-
     useEffect(() => {
         let active = true;
 
@@ -119,6 +97,49 @@ export default function EditExpense({
             setOptions([]);
         }
     }, [searchOpen]);
+
+    useEffect(() => {
+        console.log(expenseId)
+        dispatch(getSingleExpense(expenseId))
+    }, [dispatch, expenseId])
+
+    const singleExpense = useSelector((state) => (state.expense.singleExpense))
+    console.log(singleExpense)
+
+
+
+    const formik = useFormik({
+        initialValues: {
+            amount: '',
+            category: null,
+            description: '',
+            date: '',
+            time: '',
+        },
+        validate,
+        onSubmit: async (values, { resetForm }) => {
+            console.log(values);
+            const data = values
+            data.category = values.category.title
+            const response = await dispatch(updateExpense({data,expenseId}))
+            if (response) {
+                dispatch(getExpense())
+            }
+            resetForm()
+            handleClose();
+        },
+    });
+
+    useEffect(() => {
+        if (singleExpense) {
+            formik.setFieldValue('amount', singleExpense[0].amount);
+            formik.setFieldValue('category', {title:singleExpense[0].category});
+            formik.setFieldValue('description', singleExpense[0].description);
+            formik.setFieldValue('date', singleExpense[0].date);
+            formik.setFieldValue('time', singleExpense[0].time);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [expenseId, singleExpense]);
 
     return (
         <>
