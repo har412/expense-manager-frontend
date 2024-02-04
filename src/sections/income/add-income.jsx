@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { topFilms } from 'src/_mock/category';
 import { addIncome, getIncome } from 'src/redux/income/incomeSlice';
+import { getIncomeCategory } from 'src/redux/incomeCategory/incomeCategorySlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -62,13 +62,11 @@ export default function AddIncome({
   const dispatch = useDispatch()
   const loading = searchOpen && options.length === 0;
 
-  function sleep(duration) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, duration);
-    });
-  }
+  useEffect(()=>{
+    dispatch(getIncomeCategory())
+ },[dispatch])
+
+ const incomeCategory = useSelector((state)=>(state.incomeCategory.incomeCategory))
 
   const formik = useFormik({
     initialValues: {
@@ -82,7 +80,7 @@ export default function AddIncome({
     onSubmit:async (values, { resetForm }) => {
       console.log(values);
       const newData = values
-      newData.category = values.category.title
+      newData.category = values.category.name
      const response = await dispatch(addIncome(newData))
      if(response){
       dispatch(getIncome())
@@ -100,17 +98,17 @@ export default function AddIncome({
     }
 
     (async () => {
-      await sleep(1e3);
+     
 
-      if (active) {
-        setOptions([...topFilms]);
+      if (active && incomeCategory) {
+        setOptions(incomeCategory);
       }
     })();
 
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [loading , incomeCategory]);
 
   useEffect(() => {
     if (!searchOpen) {
@@ -164,8 +162,8 @@ export default function AddIncome({
                 onClose={() => {
                   setSearchOpen(false);
                 }}
-                isOptionEqualToValue={(option, value) => option.title === value.title}
-                getOptionLabel={(option) => (option.title && typeof option.title === 'string') ? option.title : ''}
+                isOptionEqualToValue={(option, value) => option.name === value.name}
+                getOptionLabel={(option) => (option.name && typeof option.name === 'string') ? option.name : ''}
                 options={options}
                 loading={loading}
                 value={formik.values.category}

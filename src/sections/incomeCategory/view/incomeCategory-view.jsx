@@ -118,7 +118,7 @@ export default function IncomeCategoryPage() {
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
       <img alt="icon" src="/assets/icons/glass/income.png" width="80px" />
-        <Typography variant="h3">IncomeCategorys</Typography>
+        <Typography variant="h3">Income Category</Typography>
         
         <AddIncomeCategory
         open={open}

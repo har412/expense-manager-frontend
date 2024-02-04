@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
@@ -13,8 +13,9 @@ import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { topFilms } from 'src/_mock/category';
+// import { topFilms } from 'src/_mock/category';
 import { addExpense, getExpense } from 'src/redux/expense/expenseSlice';
+import { getExpenseCategory } from 'src/redux/expenseCategory/expenseCategorySlice';
 
 import Iconify from 'src/components/iconify';
 
@@ -62,13 +63,11 @@ export default function AddExpense({
   const dispatch = useDispatch()
   const loading = searchOpen && options.length === 0;
 
-  function sleep(duration) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, duration);
-    });
-  }
+  useEffect(()=>{
+     dispatch(getExpenseCategory())
+  },[dispatch])
+  const expenseCategory = useSelector((state)=>(state.expenseCategory.expenseCategory))
+
 
   const formik = useFormik({
     initialValues: {
@@ -82,7 +81,7 @@ export default function AddExpense({
     onSubmit:async (values, { resetForm }) => {
       console.log(values);
       const newData = values
-      newData.category = values.category.title
+      newData.category = values.category.name
      const response = await dispatch(addExpense(newData))
      if(response){
       dispatch(getExpense())
@@ -100,17 +99,16 @@ export default function AddExpense({
     }
 
     (async () => {
-      await sleep(1e3);
 
-      if (active) {
-        setOptions([...topFilms]);
+      if (active && expenseCategory) {
+        setOptions(expenseCategory);
       }
     })();
 
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [loading  , expenseCategory]);
 
   useEffect(() => {
     if (!searchOpen) {
@@ -164,8 +162,8 @@ export default function AddExpense({
                 onClose={() => {
                   setSearchOpen(false);
                 }}
-                isOptionEqualToValue={(option, value) => option.title === value.title}
-                getOptionLabel={(option) => (option.title && typeof option.title === 'string') ? option.title : ''}
+                isOptionEqualToValue={(option, value) => option.name === value.name}
+                getOptionLabel={(option) => (option.name && typeof option.name === 'string') ? option.name : ''}
                 options={options}
                 loading={loading}
                 value={formik.values.category}

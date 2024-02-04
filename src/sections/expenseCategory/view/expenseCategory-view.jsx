@@ -118,7 +118,7 @@ export default function ExpenseCategoryPage() {
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
       <img alt="icon" src="/assets/icons/glass/expense.png" width="80px" />
-        <Typography variant="h3">ExpenseCategorys</Typography>
+        <Typography variant="h3">Expense Category</Typography>
         
         <AddExpenseCategory
         open={open}
