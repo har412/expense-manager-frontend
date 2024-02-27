@@ -19,7 +19,24 @@ export default function App() {
   return (
     <Provider store={store}>
     <ThemeProvider>
-      <ToastContainer/>
+      <ToastContainer
+          position="top-right" 
+          autoClose={5000} 
+          hideProgressBar={false} 
+          newestOnTop={false} 
+          closeOnClick 
+          rtl={false} 
+          pauseOnFocusLoss 
+          draggable 
+          pauseOnHover 
+          style={{
+            marginTop: '100px',
+            '@media (max-width: 600px)': {
+              width: '200px',
+              fontSize: '12px',
+            }
+          }} 
+      />
       <Router />
     </ThemeProvider>
     </Provider>

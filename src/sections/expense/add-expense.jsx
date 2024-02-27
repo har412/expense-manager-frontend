@@ -122,7 +122,7 @@ export default function AddExpense({
   return (
     <div>
       <Button onClick={handleOpen} variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-        New Expense
+      Add New
       </Button>
       <Modal
         aria-labelledby="transition-modal-title"
