@@ -1,3 +1,4 @@
+import { saveAs } from 'file-saver';
 import { toast } from "react-toastify";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -13,6 +14,20 @@ export const getExpense = createAsyncThunk('expense/getExpense', async () => {
         console.log(error)
         toast(error.response.data.detail)
         return null
+    }
+
+})
+
+
+export const exportExpense = createAsyncThunk('expense/exportExpense', async () => {
+    try {
+        const response = await authInstance.post('expense/export', {}, { responseType: 'blob' });
+        saveAs(response.data, 'expenses.xlsx');
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        toast(error.response.data.detail);
+        return null;
     }
 
 })

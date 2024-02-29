@@ -7,7 +7,7 @@ import { GridDeleteIcon } from '@mui/x-data-grid';
 import Typography from '@mui/material/Typography';
 import { Button, Dialog, IconButton,DialogTitle, DialogActions, DialogContent, DialogContentText } from '@mui/material';
 
-import { getExpense, deleteExpense } from 'src/redux/expense/expenseSlice';
+import { getExpense, deleteExpense, exportExpense } from 'src/redux/expense/expenseSlice';
 
 import Iconify from 'src/components/iconify';
 import Table from 'src/components/Table/Table';
@@ -48,6 +48,9 @@ export default function ExpensePage() {
   const handleEdit =async (id) => {
    await setEditId(id)
     await setOpenEditBox(true)
+  }
+  const handleExport =async()=>{
+    await dispatch(exportExpense())
   }
 
   const handleOpenConfirmation = (id) => {
@@ -126,7 +129,9 @@ export default function ExpensePage() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <img alt="icon" src="/assets/icons/glass/expense.png" width="80px" />
         <Typography variant="h3">Expenses</Typography>
-
+        <Button onClick={handleExport} variant="contained">
+      Export
+      </Button>
         <AddExpense
           open={open}
           handleClose={handleClose}
