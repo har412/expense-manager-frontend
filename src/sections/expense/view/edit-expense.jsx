@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
-import { MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
@@ -17,7 +16,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { topFilms } from 'src/_mock/category';
 import { getExpense,updateExpense, getSingleExpense,  } from 'src/redux/expense/expenseSlice';
 
-import Iconify from 'src/components/iconify';
 
 const style = {
     position: 'absolute',
@@ -99,8 +97,11 @@ export default function EditExpense({
     }, [searchOpen]);
 
     useEffect(() => {
-        console.log(expenseId)
-        dispatch(getSingleExpense(expenseId))
+        if(expenseId){
+            console.log(expenseId)
+            dispatch(getSingleExpense(expenseId))
+        }
+     
     }, [dispatch, expenseId])
 
     const singleExpense = useSelector((state) => (state.expense.singleExpense))
@@ -142,11 +143,6 @@ export default function EditExpense({
     }, [expenseId, singleExpense]);
 
     return (
-        <>
-            <MenuItem onClick={handleOpen}>
-                <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} /> Edit
-
-            </MenuItem>
 
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -257,7 +253,7 @@ export default function EditExpense({
                     </Box>
                 </Fade>
             </Modal>
-        </>
+
     );
 }
 

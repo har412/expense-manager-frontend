@@ -6,15 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
-import { MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import { getExpenseCategory,updateExpenseCategory, getSingleExpenseCategory,  } from 'src/redux/expenseCategory/expenseCategorySlice';
-
-import Iconify from 'src/components/iconify';
 
 const style = {
     position: 'absolute',
@@ -52,8 +49,11 @@ export default function EditExpenseCategory({
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log(expenseCategoryId)
-        dispatch(getSingleExpenseCategory(expenseCategoryId))
+        if(expenseCategoryId){
+            dispatch(getSingleExpenseCategory(expenseCategoryId))
+            console.log(expenseCategoryId)
+
+        }
     }, [dispatch, expenseCategoryId])
 
     const singleExpenseCategory = useSelector((state) => (state.expenseCategory.singleExpenseCategory))
@@ -91,11 +91,6 @@ export default function EditExpenseCategory({
     }, [expenseCategoryId, singleExpenseCategory]);
 
     return (
-        <>
-            <MenuItem onClick={handleOpen}>
-                <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} /> Edit
-            </MenuItem>
-
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -148,7 +143,6 @@ export default function EditExpenseCategory({
                     </Box>
                 </Fade>
             </Modal>
-        </>
     );
 }
 

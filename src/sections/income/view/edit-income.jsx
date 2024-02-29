@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
-import { MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
@@ -16,8 +15,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { topFilms } from 'src/_mock/category';
 import { getIncome,updateIncome, getSingleIncome,  } from 'src/redux/income/incomeSlice';
-
-import Iconify from 'src/components/iconify';
 
 const style = {
     position: 'absolute',
@@ -99,8 +96,11 @@ export default function EditIncome({
     }, [searchOpen]);
 
     useEffect(() => {
-        console.log(incomeId)
-        dispatch(getSingleIncome(incomeId))
+        if(incomeId){
+            console.log(incomeId)
+            dispatch(getSingleIncome(incomeId))
+
+        }
     }, [dispatch, incomeId])
 
     const singleIncome = useSelector((state) => (state.income.singleIncome))
@@ -142,11 +142,6 @@ export default function EditIncome({
     }, [incomeId, singleIncome]);
 
     return (
-        <>
-            <MenuItem onClick={handleOpen}>
-                <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} /> Edit
-
-            </MenuItem>
 
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -257,7 +252,7 @@ export default function EditIncome({
                     </Box>
                 </Fade>
             </Modal>
-        </>
+
     );
 }
 

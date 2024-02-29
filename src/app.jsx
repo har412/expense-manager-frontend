@@ -20,7 +20,7 @@ export default function App() {
     <Provider store={store}>
     <ThemeProvider>
       <ToastContainer
-          position="top-right" 
+          position="bottom-right" 
           autoClose={5000} 
           hideProgressBar={false} 
           newestOnTop={false} 
@@ -29,8 +29,8 @@ export default function App() {
           pauseOnFocusLoss 
           draggable 
           pauseOnHover 
-          style={{
-            marginTop: '100px',
+          style={{  
+            marginBottom: '100px',
             '@media (max-width: 600px)': {
               width: '200px',
               fontSize: '12px',

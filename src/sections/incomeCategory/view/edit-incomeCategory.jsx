@@ -6,15 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import Modal from '@mui/material/Modal';
-import { MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import Backdrop from '@mui/material/Backdrop';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import { getIncomeCategory,updateIncomeCategory, getSingleIncomeCategory,  } from 'src/redux/incomeCategory/incomeCategorySlice';
-
-import Iconify from 'src/components/iconify';
 
 const style = {
     position: 'absolute',
@@ -52,8 +49,10 @@ export default function EditIncomeCategory({
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if(incomeCategoryId){
         console.log(incomeCategoryId)
         dispatch(getSingleIncomeCategory(incomeCategoryId))
+        }
     }, [dispatch, incomeCategoryId])
 
     const singleIncomeCategory = useSelector((state) => (state.incomeCategory.singleIncomeCategory))
@@ -91,11 +90,6 @@ export default function EditIncomeCategory({
     }, [incomeCategoryId, singleIncomeCategory]);
 
     return (
-        <>
-            <MenuItem onClick={handleOpen}>
-                <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} /> Edit
-            </MenuItem>
-
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -148,7 +142,6 @@ export default function EditIncomeCategory({
                     </Box>
                 </Fade>
             </Modal>
-        </>
     );
 }
 
